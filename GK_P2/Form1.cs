@@ -27,6 +27,10 @@ namespace GK_P2
             vertices[0] = new Point(20, 20);
             vertices[1] = new Point(100, 100);
             vertices[2] = new Point(20, 100);
+
+            vertices[3] = new Point(200, 20);
+            vertices[4] = new Point(200, 100);
+            vertices[5] = new Point(50, 120);
             Redraw();
         }
 
