@@ -12,7 +12,9 @@ namespace GK_P2
 {
     public partial class Form1 : Form
     {
-        Point[] vertices = new Point[6];
+        Point[] v = new Point[6];
+        Point[] ind1 = new Point[3];
+        Point[] ind2 = new Point[3];
         int w, h, r = 5;
         int chosen_vertex = 0; //indeks wierzchołka, którym chcemy poruszać
         bool canMove = false;
@@ -24,13 +26,8 @@ namespace GK_P2
             pBox.Image = new Bitmap(pBox.Size.Width, pBox.Size.Height);
             w = pBox.Image.Width;
             h = pBox.Image.Height;
-            vertices[0] = new Point(20, 20);
-            vertices[1] = new Point(100, 100);
-            vertices[2] = new Point(20, 100);
-
-            vertices[3] = new Point(200, 20);
-            vertices[4] = new Point(200, 100);
-            vertices[5] = new Point(50, 120);
+            DrawExamplePolygons();
+            FillPolygons();
             Redraw();
         }
 
@@ -42,9 +39,9 @@ namespace GK_P2
                     canMove = false;
                 else
                 {
-                    for (int i = 0; i < vertices.Length; ++i)
+                    for (int i = 0; i < v.Length; ++i)
                     {
-                        if ((vertices[i].X >= e.X - 2 * r && vertices[i].X <= e.X + 2 * r) && (vertices[i].Y >= e.Y - 2 * r && vertices[i].Y <= e.Y + 2 * r))
+                        if ((v[i].X >= e.X - 2 * r && v[i].X <= e.X + 2 * r) && (v[i].Y >= e.Y - 2 * r && v[i].Y <= e.Y + 2 * r))
                         {
                             chosen_vertex = i;
                             Redraw();
@@ -55,18 +52,15 @@ namespace GK_P2
             }
             if(e.Button==MouseButtons.Right)
                 canMove = true;
-            
         }
-
         private void pBox_MouseMove(object sender, MouseEventArgs e)
         {
             if(canMove)
             {
-                vertices[chosen_vertex] = new Point(e.X, e.Y);
+                v[chosen_vertex] = new Point(e.X, e.Y);
                 Redraw();
             }
         }
-
         private void Redraw()
         {
             Image img = new Bitmap(w,h);
@@ -77,33 +71,49 @@ namespace GK_P2
             //Krawędzie
             Pen p = new Pen(Color.Black);
             for (int i = 0; i < 3; ++i)
-            {
-                g.DrawLine(p, vertices[i], vertices[(i + 1) % 3]);
-            }
+                g.DrawLine(p, v[i], v[(i + 1) % 3]);
             for (int i = 3; i < 5; ++i)
-            {
-                g.DrawLine(p, vertices[i], vertices[i + 1]);
-            }
-            g.DrawLine(p, vertices[5], vertices[3]);
+                g.DrawLine(p, v[i], v[i + 1]);
+            g.DrawLine(p, v[5], v[3]);
 
             //Wierzchłoki
-            foreach (var v in vertices)
-            {
+            foreach (var v in v)
                 g.FillEllipse(new SolidBrush(Color.Black), v.X - r, v.Y - r, 2 * r, 2 * r);
-            }
-            for (int i = 0; i < vertices.Length; ++i)
-            {
+            for (int i = 0; i < v.Length; ++i)
                 if (i == chosen_vertex)
-                    g.FillEllipse(new SolidBrush(Color.Red), vertices[i].X - r, vertices[i].Y - r, 2 * r, 2 * r);
+                    g.FillEllipse(new SolidBrush(Color.Red), v[i].X - r, v[i].Y - r, 2 * r, 2 * r);
                 else
-                    g.FillEllipse(new SolidBrush(Color.Black), vertices[i].X - r, vertices[i].Y - r, 2 * r, 2 * r);
-            }
-        }
-
-        private void Fill()
-        {
+                    g.FillEllipse(new SolidBrush(Color.Black), v[i].X - r, v[i].Y - r, 2 * r, 2 * r);
             
+        }
+        private void DrawExamplePolygons()
+        {
+            v[0] = new Point(20, 20);
+            v[1] = new Point(100, 100);
+            v[2] = new Point(20, 100);
 
+            v[3] = new Point(200, 20);
+            v[4] = new Point(200, 100);
+            v[5] = new Point(50, 120);
+
+            for (int i = 0; i < v.Length; ++i)
+                if (i < 3)
+                    ind1[i] = v[i];
+                else
+                    ind2[i - 3] = v[i];
+        }
+        private void FillPolygons()
+        {
+            Array.Sort(ind1, (a, b) =>
+            {
+                return a.Y - b.Y;
+            });
+            int yMin1 = ind1[0].Y;
+            int yMax1 = ind1[2].Y;
+
+            Array.Sort(ind2, (a, b) => a.Y - b.Y);
+            int yMin2 = ind2[0].Y;
+            int yMax2 = ind2[2].Y;
         }
     }
 }
