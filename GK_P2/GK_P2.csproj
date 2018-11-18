@@ -55,7 +55,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Struktury pomocnicze\DirectBitmap.cs" />
     <Compile Include="Struktury pomocnicze\Edge.cs" />
-    <Compile Include="Struktury pomocnicze\NormalizedVector.cs" />
+    <Compile Include="Struktury pomocnicze\MyVector.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

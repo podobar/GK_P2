@@ -30,12 +30,8 @@ namespace GK_P2
         int z = 100;
 
         Color constObjectColor = Color.White;
-        Brush black_brush = new SolidBrush(Color.Black);
-        Brush red_brush = new SolidBrush(Color.Red);
-        Pen p = new Pen(Color.Black);
-        Graphics g = null;
 
-        static int w, h, r = 5;
+        static int w, h, r = 10;
         int chosen_vertex = 0; //indeks wierzchołka, którym chcemy poruszać
         bool canMove = false;
         bool moved = true;
@@ -87,25 +83,8 @@ namespace GK_P2
             if (bitmap != null)
                 bitmap.Dispose();
             bitmap = new DirectBitmap(w, h);
-            g = Graphics.FromImage(pBox.Image = bitmap.Bitmap);
+            pBox.Image = bitmap.Bitmap;
             FillPolygons();
-
-            //Krawędzie
-            for (int i = 0; i < 3; ++i)
-                g.DrawLine(p, v[i], v[(i + 1) % 3]);
-            for (int i = 3; i < 5; ++i)
-                g.DrawLine(p, v[i], v[i + 1]);
-            g.DrawLine(p, v[5], v[3]);
-
-            //Wierzchłoki
-            foreach (var v in v)
-                g.FillEllipse(black_brush, v.X - r, v.Y - r, 2 * r, 2 * r);
-            for (int i = 0; i < v.Length; ++i)
-                if (i == chosen_vertex)
-                    g.FillEllipse(red_brush, v[i].X - r, v[i].Y - r, 2 * r, 2 * r);
-                else
-                    g.FillEllipse(black_brush, v[i].X - r, v[i].Y - r, 2 * r, 2 * r);
-            g.Dispose();
         }
         private void FillPolygons()
         {
@@ -176,12 +155,7 @@ namespace GK_P2
                         }
                     }
                 }
-                //Uaktualnij AET:
-                //aet1.Sort((e1, e2) =>
-                //{
-                //    return Math.Min(e1.p1.X, e1.p2.X) - Math.Min(e2.p1.X, e2.p2.X);
-                //});
-                //Pomaluj piksele na scanlinii, potrzebujesz dwóch punktów przecięć prostych z prostą poziomą
+                aet1.Sort((e1, e2) => Math.Min(e1.p1.X, e1.p2.X) - Math.Min(e2.p1.X, e2.p2.X));
                 Parallel.For(0, aet1.Count, i =>
                 {
                     if(i%2 == 0)
@@ -238,12 +212,7 @@ namespace GK_P2
                         }
                     }
                 }
-                //Uaktualnij AET:
-                //aet2.Sort((e1, e2) =>
-                //{
-                //    return Math.Min(e1.p1.X, e1.p2.X) - Math.Min(e2.p1.X, e2.p2.X);
-                //});
-                //Pomaluj piksele na scanlinii, potrzebujesz dwóch punktów przecięć prostych z prostą poziomą
+                aet2.Sort((e1, e2) => Math.Min(e1.p1.X, e1.p2.X) - Math.Min(e2.p1.X, e2.p2.X));
                 Parallel.For(0, aet2.Count, i =>
                 {
                     if (i % 2 == 0)
@@ -394,22 +363,51 @@ namespace GK_P2
                 sphereTimer.Start();
             }
         }
+        private void lightSourceColorReflectorsRB_CheckedChanged(object sender, EventArgs e)
+        {
+            if (lightSourceColorReflectorsRB.Checked)
+            {
+                Redraw();
+            }
+        }
+        private void lightSourceConstColorRB_CheckedChanged(object sender, EventArgs e)
+        {
+            if (lightSourceConstColorRB.Checked)
+                Redraw();
+        }
         private void ApplyColor(int start, int end, int y)
         {
             Parallel.For(start, end + 1, i =>
             {
-                NormalizedVector N = new NormalizedVector(0, 0, 1);
-                NormalizedVector L = new NormalizedVector(0, 0, 1);
-                NormalizedVector D = new NormalizedVector(0, 0, 0);
-               
-                Color toSet;
-                double R = (lightColorPbox.BackColor.R / 255.0),
-                       G = (lightColorPbox.BackColor.G / 255.0),
-                       B = (lightColorPbox.BackColor.B / 255.0);
+                MyVector N = new MyVector(0, 0, 1);
+                MyVector L = new MyVector(0, 0, 1);
+                MyVector D = new MyVector(0, 0, 0);
+                double R, G, B;
+                if (lightSourceConstColorRB.Checked)
+                {
+                    R = (lightColorPbox.BackColor.R / 255.0);
+                    G = (lightColorPbox.BackColor.G / 255.0);
+                    B = (lightColorPbox.BackColor.B / 255.0);
+                }
+                else
+                {
+                    MyVector rR = new MyVector(w / 2, h / 2, z).Normalize();
+                    MyVector RPoint = new MyVector(i, y, z).Normalize();
+                    MyVector rG = new MyVector(w / 2, -h / 2, z).Normalize();
+                    MyVector GPoint = new MyVector(w-i, -y, z).Normalize();
+                    MyVector rB = new MyVector(0, h / 2, z).Normalize();
+                    MyVector BPoint = new MyVector(w/2 - i, h-y, z).Normalize();
+                    double cosR = Math4Vectors.Cos(rR, RPoint);
+                    double cosG = Math4Vectors.Cos(rG, GPoint);
+                    double cosB = Math4Vectors.Cos(rB, BPoint);
+                    R = Math.Pow(cosR, 20);
+                    G = Math.Pow(cosG, 20);
+                    B = Math.Pow(cosB, 10);
+                }
                 //Kolor obiektu
                 if (ocTextureRB.Checked)
                 {
-                    toSet = TextureMap.GetPixel(i % (TextureMap.Width - 1) + 1, y % (TextureMap.Height - 1) + 1);
+                    Color toSet = TextureMap.GetPixel(i % (TextureMap.Width - 1) + 1, y % (TextureMap.Height - 1) + 1);
                     R *= (toSet.R / 255.0);
                     G *= (toSet.G / 255.0);
                     B *= (toSet.B / 255.0);
@@ -424,7 +422,7 @@ namespace GK_P2
                 if (normalVectorConstRB.Checked==false)
                 {
                     Color fromNormal = NormalMap.GetPixel(i % (NormalMap.Width - 1) + 1, y % (NormalMap.Height - 1) + 1);
-                    N = new NormalizedVector(fromNormal.R, fromNormal.G, fromNormal.B, true);
+                    N = new MyVector(fromNormal.R, fromNormal.G, fromNormal.B, true);
                 }
                 //D
                 if (disturbanceNoneRB.Checked==false)
@@ -434,71 +432,36 @@ namespace GK_P2
                     Color fromHeight = HeightMap.GetPixel(i % (HeightMap.Width - 1) + 1, y % (HeightMap.Height - 1) + 1);
                     int dhX = (Xplus.R + Xplus.G + Xplus.B - fromHeight.R - fromHeight.G - fromHeight.B)/3;
                     int dhY = (Yplus.R + Yplus.G + Yplus.B - fromHeight.R - fromHeight.G - fromHeight.B)/3;
-                    var T = new NormalizedVector(1, 0, -(Xplus.R + Xplus.G + Xplus.B));
-                    var Bb = new NormalizedVector(0, 1, -(Yplus.R + Yplus.G + Yplus.B));
+                    MyVector T = new MyVector(1, 0, -(Xplus.R + Xplus.G + Xplus.B));
+                    MyVector Bb = new MyVector(0, 1, -(Yplus.R + Yplus.G + Yplus.B));
                     D = Math4Vectors.Add(T.Multiply(dhX), Bb.Multiply(dhY));
                 }
                 //L
                 if(constLVectorRB.Checked==false)
                 {
-                    L = new NormalizedVector(circlePoint.X - i, -(circlePoint.Y - y), z).Normalize();
+                    L = new MyVector(circlePoint.X - i, -(circlePoint.Y - y), z).Normalize();
                 }
-
-                //*Cos(N',L)
+                //Cos(N',L)
                 var Nprim = Math4Vectors.Add(N, D);
-                double cosNL = Math4Vectors.CosNL(Nprim, L);
-                R *= cosNL;
-                G *= cosNL;
-                B *= cosNL;
-                bitmap.SetPixel(i, y, Color.FromArgb((int)(R * 255), (int)(G * 255), (int)(B * 255)));
+                double Cos = Math4Vectors.Cos(Nprim, L);
+                R *= Cos*255;
+                G *= Cos*255;
+                B *= Cos*255;
+
+                if (R > 255)
+                    R = 255;
+                if (R < 0)
+                    R = 0;
+                if (G > 255)
+                    G = 255;
+                if (G < 0)
+                    G = 0;
+                if (B > 255)
+                    B = 255;
+                if (B < 0)
+                    B = 0;
+                bitmap.SetPixel(i, y, Color.FromArgb((int)R, (int)G, (int)B));
             });
-
-            //for (int i = start; i <= end; ++i)
-            //{
-            //    Color toSet;
-            //    double R = (lightColorPbox.BackColor.R / 255.0),
-            //           G = (lightColorPbox.BackColor.G / 255.0),
-            //           B = (lightColorPbox.BackColor.B / 255.0); // IL już wczytane, teraz jeszcze * IO i cosinus
-
-            //    //Kolor obiektu
-            //    if (ocTextureRB.Checked)
-            //    {
-            //        toSet = TextureMap.GetPixel(i % (TextureMap.Width - 1) + 1, y % (TextureMap.Height - 1) + 1);
-            //        R *= (toSet.R / 255.0);
-            //        G *= (toSet.G / 255.0);
-            //        B *= (toSet.B / 255.0);
-            //    }
-            //    else
-            //    {
-            //        R *= (constObjectColor.R / 255.0);
-            //        G *= (constObjectColor.G / 255.0);
-            //        B *= (constObjectColor.B / 255.0);
-            //    }
-
-            //    //Wektor z NormalMap i HeightMap
-            //    if (normalVectorConstRB.Checked)
-            //        N = new NormalizedVector(0, 0, 1);
-            //    else
-            //    {
-            //        Color fromNormal = NormalMap.GetPixel(i % (NormalMap.Width - 1) + 1, y % (NormalMap.Height - 1) + 1);
-            //        N = new NormalizedVector(fromNormal.R, fromNormal.G, fromNormal.B, true);
-            //    }
-            //    if (disturbanceNoneRB.Checked)
-            //        D = new NormalizedVector(0, 0, 0);
-            //    else
-            //    {// TO DO
-            //        Color fromHeight = HeightMap.GetPixel(i % (HeightMap.Width - 1) + 1, y % (HeightMap.Height - 1) + 1);
-            //        D = new NormalizedVector(fromHeight.R, fromHeight.G, fromHeight.B, true);
-            //    }
-
-            //    //*Cos(N',L)
-            //    var Nprim = Math4Vectors.Add(N, D);
-            //    double cosNL = Math4Vectors.CosNL(Nprim, L);
-            //    R *= cosNL;
-            //    G *= cosNL;
-            //    B *= cosNL;
-            //    bitmap.SetPixel(i, y, Color.FromArgb((int)(R * 255), (int)(G * 255), (int)(B * 255)));
-            //}
         }
         private bool LoadTexture(ref DirectBitmap bmp)
         {
@@ -516,13 +479,13 @@ namespace GK_P2
         }
         private void DrawExamplePolygons()
         {
-            v[0] = new Point(20, 20);
-            v[1] = new Point(500, 20);
-            v[2] = new Point(200, 500);
+            v[0] = new Point(20, 29);
+            v[1] = new Point(555, 20);
+            v[2] = new Point(555, 500);
 
-            v[3] = new Point(200, 20);
-            v[4] = new Point(200, 100);
-            v[5] = new Point(50, 120);
+            v[3] = new Point(20, 40);
+            v[4] = new Point(20, 550);
+            v[5] = new Point(500, 550);
 
             for (int i = 0; i < v.Length; ++i)
                 if (i < 3)

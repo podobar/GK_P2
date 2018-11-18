@@ -32,6 +32,7 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.heightMapPBox = new System.Windows.Forms.PictureBox();
             this.disturbanceHeightMapChangeButton = new System.Windows.Forms.Button();
             this.disturbanceHeightMapRB = new System.Windows.Forms.RadioButton();
             this.disturbanceNoneRB = new System.Windows.Forms.RadioButton();
@@ -43,37 +44,38 @@
             this.sphericaLVectorRB = new System.Windows.Forms.RadioButton();
             this.constLVectorRB = new System.Windows.Forms.RadioButton();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.normalMapPBox = new System.Windows.Forms.PictureBox();
             this.normalMapChangeButton = new System.Windows.Forms.Button();
             this.normalVectorNormalMapRB = new System.Windows.Forms.RadioButton();
             this.normalVectorConstRB = new System.Windows.Forms.RadioButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.ocPBox2 = new System.Windows.Forms.PictureBox();
             this.ocTextureButton = new System.Windows.Forms.Button();
             this.ocConstButton = new System.Windows.Forms.Button();
             this.ocPBox = new System.Windows.Forms.PictureBox();
             this.ocTextureRB = new System.Windows.Forms.RadioButton();
             this.ocConstRB = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lightSourceColorReflectorsRB = new System.Windows.Forms.RadioButton();
+            this.lightSourceConstColorRB = new System.Windows.Forms.RadioButton();
             this.lightColorPbox = new System.Windows.Forms.PictureBox();
             this.soLightButton = new System.Windows.Forms.Button();
             this.pBox = new System.Windows.Forms.PictureBox();
             this.sphereTimer = new System.Windows.Forms.Timer(this.components);
-            this.heightMapPBox = new System.Windows.Forms.PictureBox();
-            this.normalMapPBox = new System.Windows.Forms.PictureBox();
-            this.ocPBox2 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.heightMapPBox)).BeginInit();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sphereRadiusUpDown)).BeginInit();
             this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.normalMapPBox)).BeginInit();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ocPBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ocPBox)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightColorPbox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.heightMapPBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.normalMapPBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ocPBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -83,7 +85,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 180F));
             this.tableLayoutPanel1.Controls.Add(this.groupBox1, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.pBox, 0, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(1, 0);
@@ -103,9 +105,9 @@
             this.groupBox1.Controls.Add(this.groupBox4);
             this.groupBox1.Controls.Add(this.groupBox3);
             this.groupBox1.Controls.Add(this.groupBox2);
-            this.groupBox1.Location = new System.Drawing.Point(587, 3);
+            this.groupBox1.Location = new System.Drawing.Point(607, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(194, 555);
+            this.groupBox1.Size = new System.Drawing.Size(174, 555);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Edycja";
@@ -123,9 +125,17 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Zaburzenie";
             // 
+            // heightMapPBox
+            // 
+            this.heightMapPBox.Location = new System.Drawing.Point(29, 62);
+            this.heightMapPBox.Name = "heightMapPBox";
+            this.heightMapPBox.Size = new System.Drawing.Size(65, 29);
+            this.heightMapPBox.TabIndex = 8;
+            this.heightMapPBox.TabStop = false;
+            // 
             // disturbanceHeightMapChangeButton
             // 
-            this.disturbanceHeightMapChangeButton.Location = new System.Drawing.Point(129, 71);
+            this.disturbanceHeightMapChangeButton.Location = new System.Drawing.Point(122, 71);
             this.disturbanceHeightMapChangeButton.Name = "disturbanceHeightMapChangeButton";
             this.disturbanceHeightMapChangeButton.Size = new System.Drawing.Size(45, 20);
             this.disturbanceHeightMapChangeButton.TabIndex = 7;
@@ -219,7 +229,7 @@
             // 
             // sphereRadiusChangeButton
             // 
-            this.sphereRadiusChangeButton.Location = new System.Drawing.Point(129, 99);
+            this.sphereRadiusChangeButton.Location = new System.Drawing.Point(122, 99);
             this.sphereRadiusChangeButton.Name = "sphereRadiusChangeButton";
             this.sphereRadiusChangeButton.Size = new System.Drawing.Size(45, 20);
             this.sphereRadiusChangeButton.TabIndex = 6;
@@ -263,9 +273,17 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "N - wektor normalny przed zaburzeniem";
             // 
+            // normalMapPBox
+            // 
+            this.normalMapPBox.Location = new System.Drawing.Point(29, 90);
+            this.normalMapPBox.Name = "normalMapPBox";
+            this.normalMapPBox.Size = new System.Drawing.Size(65, 29);
+            this.normalMapPBox.TabIndex = 9;
+            this.normalMapPBox.TabStop = false;
+            // 
             // normalMapChangeButton
             // 
-            this.normalMapChangeButton.Location = new System.Drawing.Point(129, 99);
+            this.normalMapChangeButton.Location = new System.Drawing.Point(122, 101);
             this.normalMapChangeButton.Name = "normalMapChangeButton";
             this.normalMapChangeButton.Size = new System.Drawing.Size(45, 20);
             this.normalMapChangeButton.TabIndex = 6;
@@ -312,9 +330,17 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Kolor obiektu";
             // 
+            // ocPBox2
+            // 
+            this.ocPBox2.Location = new System.Drawing.Point(65, 37);
+            this.ocPBox2.Name = "ocPBox2";
+            this.ocPBox2.Size = new System.Drawing.Size(60, 27);
+            this.ocPBox2.TabIndex = 9;
+            this.ocPBox2.TabStop = false;
+            // 
             // ocTextureButton
             // 
-            this.ocTextureButton.Location = new System.Drawing.Point(130, 44);
+            this.ocTextureButton.Location = new System.Drawing.Point(123, 42);
             this.ocTextureButton.Name = "ocTextureButton";
             this.ocTextureButton.Size = new System.Drawing.Size(45, 20);
             this.ocTextureButton.TabIndex = 4;
@@ -324,7 +350,7 @@
             // 
             // ocConstButton
             // 
-            this.ocConstButton.Location = new System.Drawing.Point(130, 19);
+            this.ocConstButton.Location = new System.Drawing.Point(123, 19);
             this.ocConstButton.Name = "ocConstButton";
             this.ocConstButton.Size = new System.Drawing.Size(45, 20);
             this.ocConstButton.TabIndex = 3;
@@ -367,27 +393,53 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.lightSourceColorReflectorsRB);
+            this.groupBox2.Controls.Add(this.lightSourceConstColorRB);
             this.groupBox2.Controls.Add(this.lightColorPbox);
             this.groupBox2.Controls.Add(this.soLightButton);
-            this.groupBox2.Location = new System.Drawing.Point(3, 31);
+            this.groupBox2.Location = new System.Drawing.Point(3, 19);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(181, 70);
+            this.groupBox2.Size = new System.Drawing.Size(181, 82);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Kolor źródła światła";
             // 
+            // lightSourceColorReflectorsRB
+            // 
+            this.lightSourceColorReflectorsRB.AutoSize = true;
+            this.lightSourceColorReflectorsRB.Checked = true;
+            this.lightSourceColorReflectorsRB.Location = new System.Drawing.Point(6, 59);
+            this.lightSourceColorReflectorsRB.Name = "lightSourceColorReflectorsRB";
+            this.lightSourceColorReflectorsRB.Size = new System.Drawing.Size(85, 17);
+            this.lightSourceColorReflectorsRB.TabIndex = 4;
+            this.lightSourceColorReflectorsRB.TabStop = true;
+            this.lightSourceColorReflectorsRB.Text = "z reflektorów";
+            this.lightSourceColorReflectorsRB.UseVisualStyleBackColor = true;
+            this.lightSourceColorReflectorsRB.CheckedChanged += new System.EventHandler(this.lightSourceColorReflectorsRB_CheckedChanged);
+            // 
+            // lightSourceConstColorRB
+            // 
+            this.lightSourceConstColorRB.AutoSize = true;
+            this.lightSourceConstColorRB.Location = new System.Drawing.Point(6, 19);
+            this.lightSourceConstColorRB.Name = "lightSourceConstColorRB";
+            this.lightSourceConstColorRB.Size = new System.Drawing.Size(48, 17);
+            this.lightSourceConstColorRB.TabIndex = 3;
+            this.lightSourceConstColorRB.Text = "stały";
+            this.lightSourceConstColorRB.UseVisualStyleBackColor = true;
+            this.lightSourceConstColorRB.CheckedChanged += new System.EventHandler(this.lightSourceConstColorRB_CheckedChanged);
+            // 
             // lightColorPbox
             // 
             this.lightColorPbox.BackColor = System.Drawing.Color.White;
-            this.lightColorPbox.Location = new System.Drawing.Point(6, 32);
+            this.lightColorPbox.Location = new System.Drawing.Point(65, 19);
             this.lightColorPbox.Name = "lightColorPbox";
-            this.lightColorPbox.Size = new System.Drawing.Size(78, 21);
+            this.lightColorPbox.Size = new System.Drawing.Size(52, 21);
             this.lightColorPbox.TabIndex = 1;
             this.lightColorPbox.TabStop = false;
             // 
             // soLightButton
             // 
-            this.soLightButton.Location = new System.Drawing.Point(130, 33);
+            this.soLightButton.Location = new System.Drawing.Point(123, 17);
             this.soLightButton.Name = "soLightButton";
             this.soLightButton.Size = new System.Drawing.Size(45, 20);
             this.soLightButton.TabIndex = 2;
@@ -400,7 +452,7 @@
             this.pBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pBox.Location = new System.Drawing.Point(3, 3);
             this.pBox.Name = "pBox";
-            this.pBox.Size = new System.Drawing.Size(578, 555);
+            this.pBox.Size = new System.Drawing.Size(598, 555);
             this.pBox.TabIndex = 1;
             this.pBox.TabStop = false;
             this.pBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pBox_MouseDown);
@@ -408,32 +460,7 @@
             // 
             // sphereTimer
             // 
-            this.sphereTimer.Interval = 40;
             this.sphereTimer.Tick += new System.EventHandler(this.countCirclePoint);
-            // 
-            // heightMapPBox
-            // 
-            this.heightMapPBox.Location = new System.Drawing.Point(29, 62);
-            this.heightMapPBox.Name = "heightMapPBox";
-            this.heightMapPBox.Size = new System.Drawing.Size(65, 29);
-            this.heightMapPBox.TabIndex = 8;
-            this.heightMapPBox.TabStop = false;
-            // 
-            // normalMapPBox
-            // 
-            this.normalMapPBox.Location = new System.Drawing.Point(29, 90);
-            this.normalMapPBox.Name = "normalMapPBox";
-            this.normalMapPBox.Size = new System.Drawing.Size(65, 29);
-            this.normalMapPBox.TabIndex = 9;
-            this.normalMapPBox.TabStop = false;
-            // 
-            // ocPBox2
-            // 
-            this.ocPBox2.Location = new System.Drawing.Point(65, 37);
-            this.ocPBox2.Name = "ocPBox2";
-            this.ocPBox2.Size = new System.Drawing.Size(60, 27);
-            this.ocPBox2.TabIndex = 9;
-            this.ocPBox2.TabStop = false;
             // 
             // Form1
             // 
@@ -442,6 +469,7 @@
             this.ClientSize = new System.Drawing.Size(784, 561);
             this.Controls.Add(this.tableLayoutPanel1);
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(800, 600);
             this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "Form1";
             this.Text = "Wypełniacz";
@@ -449,20 +477,21 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.heightMapPBox)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sphereRadiusUpDown)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.normalMapPBox)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ocPBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ocPBox)).EndInit();
             this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightColorPbox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.heightMapPBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.normalMapPBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ocPBox2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -500,6 +529,8 @@
         private System.Windows.Forms.PictureBox heightMapPBox;
         private System.Windows.Forms.PictureBox normalMapPBox;
         private System.Windows.Forms.PictureBox ocPBox2;
+        private System.Windows.Forms.RadioButton lightSourceColorReflectorsRB;
+        private System.Windows.Forms.RadioButton lightSourceConstColorRB;
     }
 }
 

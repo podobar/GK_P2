@@ -6,16 +6,13 @@ using System.Threading.Tasks;
 
 namespace GK_P2.Struktury_pomocnicze
 {
-    public class NormalizedVector
+    public class MyVector
     {
         public double x { get; set; }
         public double y { get; set; }
         public double z { get; set; }
-        
-
-        public NormalizedVector(double x, double y, double z, bool zetEqualsOne = false)
+        public MyVector(double x, double y, double z, bool zetEqualsOne = false)
         {
-            //wektor N
             if(zetEqualsOne)
             {
                 if(z!=0)
@@ -36,18 +33,18 @@ namespace GK_P2.Struktury_pomocnicze
     }
     public static class Math4Vectors
     {
-        public static NormalizedVector Multiply(this NormalizedVector v, double c)
+        public static MyVector Multiply(this MyVector v, double c)
         {
             v.x *= c;
             v.y *= c;
             v.z *= c;
             return v;
         }
-        public static double CosNL(this NormalizedVector N, NormalizedVector L)
+        public static double Cos(this MyVector N, MyVector L)
         {
             return Math.Abs(N.x * L.x + N.y * L.y + N.z * L.z);
         }
-        public static NormalizedVector Add(this NormalizedVector N, NormalizedVector D, bool normalize = true)
+        public static MyVector Add(this MyVector N, MyVector D, bool normalize = true)
         {
             N.x += D.x;
             N.y += D.y;
@@ -66,7 +63,7 @@ namespace GK_P2.Struktury_pomocnicze
             }
             return N;
         }
-        public static NormalizedVector Normalize(this NormalizedVector v)
+        public static MyVector Normalize(this MyVector v)
         {
             double div = Math.Sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
             if (div != 0)
