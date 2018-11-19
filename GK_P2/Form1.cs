@@ -30,9 +30,11 @@ namespace GK_P2
         int z = 100;
 
         Color constObjectColor = Color.White;
-
+        //LAB TASK
+        int t = 2;
+        //
         static int w, h, r = 10;
-        int chosen_vertex = 0; //indeks wierzchołka, którym chcemy poruszać
+        int chosen_vertex = 0; //index of vertex to be moved
         bool canMove = false;
         bool moved = true;
         public Form1()
@@ -45,6 +47,7 @@ namespace GK_P2
             normalMapPBox.Image = NormalMap.Bitmap.GetThumbnailImage(normalMapPBox.Width, normalMapPBox.Height, () => false, IntPtr.Zero);
             heightMapPBox.Image = HeightMap.Bitmap.GetThumbnailImage(heightMapPBox.Width, heightMapPBox.Height, () => false, IntPtr.Zero);
             DrawExamplePolygons();
+            functionTimer.Start();
             Redraw();
         }
         private void pBox_MouseDown(object sender, MouseEventArgs e)
@@ -111,7 +114,7 @@ namespace GK_P2
             int yMax2 = ind2[2].Y;
             
             for (int y = yMin1+1; y <= yMax1+1; ++y)
-            {// tylko dla ind1
+            {
                 foreach(var vertex in ind1)
                 {
                     if(vertex.Y==y-1)
@@ -156,19 +159,16 @@ namespace GK_P2
                     }
                 }
                 aet1.Sort((e1, e2) => Math.Min(e1.p1.X, e1.p2.X) - Math.Min(e2.p1.X, e2.p2.X));
-                Parallel.For(0, aet1.Count, i =>
+                for (int i = 0; i < aet1.Count; i += 2)
                 {
-                    if(i%2 == 0)
-                    {
-                        int x1 = aet1[i].Intersection(y);
-                        int x2 = aet1[i + 1].Intersection(y);
-                        ApplyColor(Math.Min(x1, x2), Math.Max(x1, x2), y);
-                    }
-                });
-                
+                    int x1 = aet1[i].Intersection(y);
+                    int x2 = aet1[i + 1].Intersection(y);
+                    ApplyColor(Math.Min(x1, x2), Math.Max(x1, x2), y);
+                }
+
             }
             for (int y = yMin2 + 1; y <= yMax2 + 1; ++y)
-            {// tylko dla ind2
+            {
                 foreach (var vertex in ind2)
                 {
                     if (vertex.Y == y - 1)
@@ -213,15 +213,12 @@ namespace GK_P2
                     }
                 }
                 aet2.Sort((e1, e2) => Math.Min(e1.p1.X, e1.p2.X) - Math.Min(e2.p1.X, e2.p2.X));
-                Parallel.For(0, aet2.Count, i =>
+                for(int i=0;i<aet2.Count;i+=2)
                 {
-                    if (i % 2 == 0)
-                    {
-                        int x1 = aet2[i].Intersection(y);
-                        int x2 = aet2[i + 1].Intersection(y);
-                        ApplyColor(Math.Min(x1, x2), Math.Max(x1, x2), y);
-                    }
-                });
+                    int x1 = aet2[i].Intersection(y);
+                    int x2 = aet2[i + 1].Intersection(y);
+                    ApplyColor(Math.Min(x1, x2), Math.Max(x1, x2), y);
+                }
             }
         }
         private void sphereRadiusChangeButton_Click(object sender, EventArgs e)
@@ -394,9 +391,9 @@ namespace GK_P2
                     MyVector rR = new MyVector(w / 2, h / 2, z).Normalize();
                     MyVector RPoint = new MyVector(i, y, z).Normalize();
                     MyVector rG = new MyVector(w / 2, -h / 2, z).Normalize();
-                    MyVector GPoint = new MyVector(w-i, -y, z).Normalize();
+                    MyVector GPoint = new MyVector(w - i, -y, z).Normalize();
                     MyVector rB = new MyVector(0, h / 2, z).Normalize();
-                    MyVector BPoint = new MyVector(w/2 - i, h-y, z).Normalize();
+                    MyVector BPoint = new MyVector(w / 2 - i, h - y, z).Normalize();
                     double cosR = Math4Vectors.Cos(rR, RPoint);
                     double cosG = Math4Vectors.Cos(rG, GPoint);
                     double cosB = Math4Vectors.Cos(rB, BPoint);
@@ -419,34 +416,42 @@ namespace GK_P2
                     B *= (constObjectColor.B / 255.0);
                 }
                 //N
-                if (normalVectorConstRB.Checked==false)
+                if (normalVectorConstRB.Checked == false)
                 {
                     Color fromNormal = NormalMap.GetPixel(i % (NormalMap.Width - 1) + 1, y % (NormalMap.Height - 1) + 1);
                     N = new MyVector(fromNormal.R, fromNormal.G, fromNormal.B, true);
                 }
+                #region CZĘŚĆ LABORATORYJNA
+                if (normalMapFromFunctionRB.Checked)
+                {
+                    double a = (double)aToFunctionUpDown.Value / 1000;
+                    double b = (double)bToFunctionUpDown.Value / 1000;
+                    N = new MyVector(i , y, (1+fXY(a,b,i, y, t))*128, true);
+                }
+                #endregion
                 //D
-                if (disturbanceNoneRB.Checked==false)
+                if (disturbanceNoneRB.Checked == false)
                 {
                     Color Xplus = HeightMap.GetPixel((i + 1) % (HeightMap.Width - 1) + 1, y % (HeightMap.Height - 1) + 1);
                     Color Yplus = HeightMap.GetPixel(i % (HeightMap.Width - 1) + 1, (y + 1) % (HeightMap.Height - 1) + 1);
                     Color fromHeight = HeightMap.GetPixel(i % (HeightMap.Width - 1) + 1, y % (HeightMap.Height - 1) + 1);
-                    int dhX = (Xplus.R + Xplus.G + Xplus.B - fromHeight.R - fromHeight.G - fromHeight.B)/3;
-                    int dhY = (Yplus.R + Yplus.G + Yplus.B - fromHeight.R - fromHeight.G - fromHeight.B)/3;
+                    int dhX = (Xplus.R + Xplus.G + Xplus.B - fromHeight.R - fromHeight.G - fromHeight.B) / 3;
+                    int dhY = (Yplus.R + Yplus.G + Yplus.B - fromHeight.R - fromHeight.G - fromHeight.B) / 3;
                     MyVector T = new MyVector(1, 0, -(Xplus.R + Xplus.G + Xplus.B));
                     MyVector Bb = new MyVector(0, 1, -(Yplus.R + Yplus.G + Yplus.B));
                     D = Math4Vectors.Add(T.Multiply(dhX), Bb.Multiply(dhY));
                 }
                 //L
-                if(constLVectorRB.Checked==false)
+                if (constLVectorRB.Checked == false)
                 {
                     L = new MyVector(circlePoint.X - i, -(circlePoint.Y - y), z).Normalize();
                 }
                 //Cos(N',L)
                 var Nprim = Math4Vectors.Add(N, D);
                 double Cos = Math4Vectors.Cos(Nprim, L);
-                R *= Cos*255;
-                G *= Cos*255;
-                B *= Cos*255;
+                R *= Cos * 255;
+                G *= Cos * 255;
+                B *= Cos * 255;
 
                 if (R > 255)
                     R = 255;
@@ -493,6 +498,7 @@ namespace GK_P2
                 else
                     ind2[i - 3] = v[i];
         }
+
         private void countCirclePoint(object sender, EventArgs e)
         {
             int x = (int)(sphereRadius * Math.Cos(angle * Math.PI / 180F)) + w / 2;
@@ -501,5 +507,16 @@ namespace GK_P2
             circlePoint = new Point(x, y);
             Redraw();
         }
+        #region Funkcje z laboratorium
+        private double fXY(double a, double b, double x, double y,int time)
+        {
+            return Math.Sin(a * x + time) * Math.Cos(b* y + time);
+        }
+        private void changeTimeForFunction(object sender, EventArgs e)
+        {
+            t = (t + 1) % 500 + 1;
+            Redraw();
+        }
+        #endregion
     }
 }

@@ -44,6 +44,7 @@
             this.sphericaLVectorRB = new System.Windows.Forms.RadioButton();
             this.constLVectorRB = new System.Windows.Forms.RadioButton();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.normalMapFromFunctionRB = new System.Windows.Forms.RadioButton();
             this.normalMapPBox = new System.Windows.Forms.PictureBox();
             this.normalMapChangeButton = new System.Windows.Forms.Button();
             this.normalVectorNormalMapRB = new System.Windows.Forms.RadioButton();
@@ -62,6 +63,11 @@
             this.soLightButton = new System.Windows.Forms.Button();
             this.pBox = new System.Windows.Forms.PictureBox();
             this.sphereTimer = new System.Windows.Forms.Timer(this.components);
+            this.functionTimer = new System.Windows.Forms.Timer(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.aToFunctionUpDown = new System.Windows.Forms.NumericUpDown();
+            this.bToFunctionUpDown = new System.Windows.Forms.NumericUpDown();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -76,6 +82,8 @@
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightColorPbox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.aToFunctionUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bToFunctionUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -262,6 +270,11 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.bToFunctionUpDown);
+            this.groupBox4.Controls.Add(this.aToFunctionUpDown);
+            this.groupBox4.Controls.Add(this.label3);
+            this.groupBox4.Controls.Add(this.label1);
+            this.groupBox4.Controls.Add(this.normalMapFromFunctionRB);
             this.groupBox4.Controls.Add(this.normalMapPBox);
             this.groupBox4.Controls.Add(this.normalMapChangeButton);
             this.groupBox4.Controls.Add(this.normalVectorNormalMapRB);
@@ -273,9 +286,20 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "N - wektor normalny przed zaburzeniem";
             // 
+            // normalMapFromFunctionRB
+            // 
+            this.normalMapFromFunctionRB.AutoSize = true;
+            this.normalMapFromFunctionRB.Location = new System.Drawing.Point(5, 76);
+            this.normalMapFromFunctionRB.Name = "normalMapFromFunctionRB";
+            this.normalMapFromFunctionRB.Size = new System.Drawing.Size(95, 17);
+            this.normalMapFromFunctionRB.TabIndex = 10;
+            this.normalMapFromFunctionRB.TabStop = true;
+            this.normalMapFromFunctionRB.Text = "Z funkcji (LAB)";
+            this.normalMapFromFunctionRB.UseVisualStyleBackColor = true;
+            // 
             // normalMapPBox
             // 
-            this.normalMapPBox.Location = new System.Drawing.Point(29, 90);
+            this.normalMapPBox.Location = new System.Drawing.Point(99, 19);
             this.normalMapPBox.Name = "normalMapPBox";
             this.normalMapPBox.Size = new System.Drawing.Size(65, 29);
             this.normalMapPBox.TabIndex = 9;
@@ -283,7 +307,7 @@
             // 
             // normalMapChangeButton
             // 
-            this.normalMapChangeButton.Location = new System.Drawing.Point(122, 101);
+            this.normalMapChangeButton.Location = new System.Drawing.Point(85, 53);
             this.normalMapChangeButton.Name = "normalMapChangeButton";
             this.normalMapChangeButton.Size = new System.Drawing.Size(45, 20);
             this.normalMapChangeButton.TabIndex = 6;
@@ -295,19 +319,19 @@
             // 
             this.normalVectorNormalMapRB.AutoSize = true;
             this.normalVectorNormalMapRB.Checked = true;
-            this.normalVectorNormalMapRB.Location = new System.Drawing.Point(6, 62);
+            this.normalVectorNormalMapRB.Location = new System.Drawing.Point(6, 53);
             this.normalVectorNormalMapRB.Name = "normalVectorNormalMapRB";
-            this.normalVectorNormalMapRB.Size = new System.Drawing.Size(127, 17);
+            this.normalVectorNormalMapRB.Size = new System.Drawing.Size(70, 17);
             this.normalVectorNormalMapRB.TabIndex = 5;
             this.normalVectorNormalMapRB.TabStop = true;
-            this.normalVectorNormalMapRB.Text = "z tekstury NormalMap";
+            this.normalVectorNormalMapRB.Text = "z tekstury";
             this.normalVectorNormalMapRB.UseVisualStyleBackColor = true;
             this.normalVectorNormalMapRB.CheckedChanged += new System.EventHandler(this.normalVectorNormalMapRB_CheckedChanged);
             // 
             // normalVectorConstRB
             // 
             this.normalVectorConstRB.AutoSize = true;
-            this.normalVectorConstRB.Location = new System.Drawing.Point(7, 39);
+            this.normalVectorConstRB.Location = new System.Drawing.Point(5, 30);
             this.normalVectorConstRB.Name = "normalVectorConstRB";
             this.normalVectorConstRB.Size = new System.Drawing.Size(87, 17);
             this.normalVectorConstRB.TabIndex = 1;
@@ -462,6 +486,72 @@
             // 
             this.sphereTimer.Tick += new System.EventHandler(this.countCirclePoint);
             // 
+            // functionTimer
+            // 
+            this.functionTimer.Tick += new System.EventHandler(this.changeTimeForFunction);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(1, 101);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(49, 13);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "1000a = ";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(121, 84);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(49, 13);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "1000b = ";
+            // 
+            // aToFunctionUpDown
+            // 
+            this.aToFunctionUpDown.Location = new System.Drawing.Point(50, 99);
+            this.aToFunctionUpDown.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.aToFunctionUpDown.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.aToFunctionUpDown.Name = "aToFunctionUpDown";
+            this.aToFunctionUpDown.Size = new System.Drawing.Size(40, 20);
+            this.aToFunctionUpDown.TabIndex = 13;
+            this.aToFunctionUpDown.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            // 
+            // bToFunctionUpDown
+            // 
+            this.bToFunctionUpDown.Location = new System.Drawing.Point(119, 100);
+            this.bToFunctionUpDown.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.bToFunctionUpDown.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.bToFunctionUpDown.Name = "bToFunctionUpDown";
+            this.bToFunctionUpDown.Size = new System.Drawing.Size(48, 20);
+            this.bToFunctionUpDown.TabIndex = 14;
+            this.bToFunctionUpDown.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -492,6 +582,8 @@
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightColorPbox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.aToFunctionUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bToFunctionUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -531,6 +623,12 @@
         private System.Windows.Forms.PictureBox ocPBox2;
         private System.Windows.Forms.RadioButton lightSourceColorReflectorsRB;
         private System.Windows.Forms.RadioButton lightSourceConstColorRB;
+        private System.Windows.Forms.RadioButton normalMapFromFunctionRB;
+        private System.Windows.Forms.Timer functionTimer;
+        private System.Windows.Forms.NumericUpDown bToFunctionUpDown;
+        private System.Windows.Forms.NumericUpDown aToFunctionUpDown;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label1;
     }
 }
 
